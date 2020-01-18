@@ -7,6 +7,9 @@ extern crate circuit_playground_express as hal;
 extern crate cortex_m_rt;
 extern crate panic_halt;
 
+#[macro_use(block)]
+extern crate nb;
+
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
 use hal::prelude::*;
@@ -16,6 +19,8 @@ use hal::pac::gclk::genctrl::SRC_A;
 use hal::sercom::{PadPin, Sercom4Pad0, Sercom4Pad1, UART4};
 
 use cortex_m_rt::entry;
+
+static MESSAGE: &[u8] = b"\r\nThe rain in spain falls mainly in the plain!\r\n";
 
 // PA17 == samd21g18a pin 26 == Circuit Playground Express signal D13
 type RedLED = hal::gpio::Pa17<hal::gpio::Output<hal::gpio::OpenDrain>>;
@@ -52,13 +57,20 @@ fn main() -> ! {
         .into_pull_down_input(&mut pins.port)
         .into_pad(&mut pins.port);
 
-    let mut _uart = UART4::new(
+    let mut uart = UART4::new(
         &uart_clk,
         115200.hz(),
         peripherals.SERCOM4,
         &mut peripherals.PM,
         (rx, tx),
     );
+
+    // Write a string of bytes out the serial port
+    for i in 0..MESSAGE.len()  {
+        // NOTE `block!` blocks until `uart.write()` completes and returns
+        // `Result<(), Error>`
+        block!(uart.write(MESSAGE[i])).unwrap();
+    }
 
     loop {
         red_led.set_high().unwrap();
