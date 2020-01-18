@@ -13,16 +13,17 @@ use hal::pac::{CorePeripherals, Peripherals};
 
 use cortex_m_rt::entry;
 
-type Output = hal::gpio::Pa17<hal::gpio::Output<hal::gpio::OpenDrain>>;
+// PA17 == samd21g18a pin 26 == Circuit Playground Express signal D13
+type RedLED = hal::gpio::Pa17<hal::gpio::Output<hal::gpio::OpenDrain>>;
 
-fn dit(delay: &mut Delay, red_led: &mut Output) {
+fn dit(delay: &mut Delay, red_led: &mut RedLED) {
     red_led.set_high().unwrap();
     delay.delay_ms(250u8);
     red_led.set_low().unwrap();
     delay.delay_ms(250u8);
 }
 
-fn dah(delay: &mut Delay, red_led: &mut Output) {
+fn dah(delay: &mut Delay, red_led: &mut RedLED) {
     red_led.set_high().unwrap();
     delay.delay_ms(750u16);
     red_led.set_low().unwrap();
