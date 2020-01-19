@@ -9,7 +9,7 @@ extern crate panic_halt;
 #[macro_use(block)]
 extern crate nb;
 
-use core::fmt::Write;
+use core::fmt::{Result, Write};
 use cortex_m_rt::entry;
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
@@ -18,8 +18,6 @@ use hal::pac::gclk::genctrl::SRC_A;
 use hal::pac::{CorePeripherals, Peripherals};
 use hal::prelude::*;
 use hal::sercom::{PadPin, Sercom4Pad0, Sercom4Pad1, UART4};
-
-static MESSAGE: &[u8] = b"\r\nHello from SerialStdOut!\r\n";
 
 // PA17 == samd21g18a pin 26 == Circuit Playground Express signal D13
 type RedLED = hal::gpio::Pa17<hal::gpio::Output<hal::gpio::OpenDrain>>;
@@ -95,18 +93,33 @@ impl SerialStdOut {
         SerialStdOut { uart }
     }
 
-    /// Write a slice of bytes out the serial port
-    pub fn write_bytes(&mut self, msg: &[u8]) {
-        for i in 0..msg.len() {
-            block!(self.uart.write(msg[i])).unwrap();
+    #[allow(dead_code)]
+    pub fn write_bytes(&mut self, buf: &[u8]) {
+        for b in buf {
+            block!(self.uart.write(*b)).unwrap();
         }
+    }
+}
+
+impl Write for SerialStdOut {
+    fn write_str(&mut self, s: &str) -> Result {
+        for b in s.bytes() {
+            if b == b'\n' {
+                block!(self.uart.write(b'\r')).unwrap();
+            }
+            block!(self.uart.write(b)).unwrap();
+        }
+        Ok(())
     }
 }
 
 #[entry]
 fn main() -> ! {
     let mut chip = ChipResources::new();
-    chip.stdout.write_bytes(MESSAGE);
+    writeln!(chip.stdout, "\nHello from the SerialStdOut demo!").ok();
+    let a = 2;
+    let b = 3;
+    writeln!(chip.stdout, "a + b = {}", a + b).ok();
 
     loop {
         chip.red_led.set_high().unwrap();
