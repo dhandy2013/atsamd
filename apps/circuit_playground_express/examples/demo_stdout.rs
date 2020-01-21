@@ -9,7 +9,7 @@ extern crate panic_halt;
 use core::fmt::Write; // needed for writeln!()
 use cortex_m_rt::entry;
 use cpe_apps::ChipResources;
-use hal::prelude::*;
+use hal::prelude::*; // needed for .set_high(), .set_low(), and more
 
 #[entry]
 fn main() -> ! {
