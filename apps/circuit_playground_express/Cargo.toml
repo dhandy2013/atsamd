@@ -1,0 +1,17 @@
+[package]
+name = "cpe_apps"
+version = "0.1.0"
+authors = ["David H <cpif@handysoftware.com>"]
+edition = "2018"
+description = "Apps and utility library for Circuit Playground Express"
+readme = "README.md"
+
+[dependencies]
+nb = "~0.1"
+
+[dependencies.circuit_playground_express]
+path = "../../boards/circuit_playground_express"
+
+[dev-dependencies]
+panic-halt = "~0.2"
+cortex-m-rt = "~0.6"
