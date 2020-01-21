@@ -7,11 +7,9 @@ description = "Apps and utility library for Circuit Playground Express"
 readme = "README.md"
 
 [dependencies]
+cortex-m-rt = "~0.6"
 nb = "~0.1"
+panic-halt = "~0.2"
 
 [dependencies.circuit_playground_express]
 path = "../../boards/circuit_playground_express"
-
-[dev-dependencies]
-panic-halt = "~0.2"
-cortex-m-rt = "~0.6"

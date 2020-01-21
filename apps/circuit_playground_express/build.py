@@ -20,10 +20,12 @@ def cmd(args):
 
 def build(app_name, *, example=False):
     if example:
+        target_type = '--example'
         target_dir = 'target/thumbv6m-none-eabi/release/examples'
     else:
-        raise NotImplementedError("binary crates not ready yet")
-    cmd(['cargo', 'build', '--example', app_name, '--release'])
+        target_type = '--bin'
+        target_dir = 'target/thumbv6m-none-eabi/release'
+    cmd(['cargo', 'build', target_type, app_name, '--release'])
     app_elf_path = os.path.join(target_dir, app_name)
     app_bin_path = os.path.join(target_dir, app_name + '.bin')
     cmd(['arm-none-eabi-objcopy', '-O', 'binary', app_elf_path, app_bin_path])
