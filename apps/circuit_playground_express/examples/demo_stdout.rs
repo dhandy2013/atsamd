@@ -2,10 +2,9 @@
 #![no_std]
 #![no_main]
 
-extern crate circuit_playground_express as hal;
-extern crate cortex_m_rt;
 extern crate panic_halt;
 
+use circuit_playground_express as hal;
 use core::fmt::Write; // needed for writeln!()
 use cortex_m_rt::entry;
 use cpe_apps::ChipResources;

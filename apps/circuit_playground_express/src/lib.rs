@@ -1,11 +1,10 @@
 //! David's Circuit Playground Express application utility library
 #![no_std]
 
-extern crate circuit_playground_express as hal;
-
 #[macro_use(block)]
 extern crate nb;
 
+use circuit_playground_express as hal;
 use core::fmt::{Result, Write};
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
