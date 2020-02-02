@@ -14,6 +14,8 @@ use hal::pac::{CorePeripherals, Peripherals};
 use hal::prelude::*;
 use hal::sercom::{PadPin, Sercom4Pad0, Sercom4Pad1, UART4};
 
+pub mod lowlevel;
+
 // PA17 == samd21g18a pin 26 == Circuit Playground Express signal D13
 type RedLED = hal::gpio::Pa17<hal::gpio::Output<hal::gpio::OpenDrain>>;
 

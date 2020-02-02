@@ -14,7 +14,7 @@ asm_add:                        // Name of subroutine
 .global asm_dump_registers
 .type asm_dump_registers, %function
 asm_dump_registers:
-    // r0: Address of a 16-byte array to store the result
+    // r0: Address of an a array of 16 32-bit words to store the result
     str     r0, [r0, #0]
     str     r1, [r0, #4]
     str     r2, [r0, #8]

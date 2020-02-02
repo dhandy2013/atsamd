@@ -5,6 +5,7 @@ authors = ["David H <cpif@handysoftware.com>"]
 edition = "2018"
 description = "Apps and utility library for Circuit Playground Express"
 readme = "README.md"
+links = "lowlevel"
 
 [dependencies]
 cortex-m-rt = "~0.6"
@@ -13,3 +14,6 @@ panic-halt = "~0.2"
 
 [dependencies.circuit_playground_express]
 path = "../../boards/circuit_playground_express"
+
+[build-dependencies]
+cc = "1.0"
